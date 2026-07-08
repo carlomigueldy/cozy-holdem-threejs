@@ -1,0 +1,34 @@
+{
+  "name": "cozy-holdem-threejs",
+  "version": "1.0.0",
+  "description": "A cozy 3D Texas Hold'em poker game built with Three.js, Vite, TypeScript, and pnpm.",
+  "type": "module",
+  "packageManager": "pnpm@11.9.0",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "node tests/browser-smoke.mjs"
+  },
+  "keywords": [
+    "threejs",
+    "poker",
+    "texas-holdem",
+    "vite",
+    "game"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "three": "^0.185.1"
+  },
+  "devDependencies": {
+    "@types/three": "^0.185.0",
+    "playwright": "^1.61.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.3",
+    "vitest": "^4.1.10"
+  }
+}

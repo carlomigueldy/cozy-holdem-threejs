@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700;800&family=Inter:wght@500;600;700;800&display=swap');
+
+:root {
+  color-scheme: dark;
+  --cream: #fff0d6;
+  --paper: rgba(255, 236, 196, 0.88);
+  --ink: #20130d;
+  --coffee: rgba(32, 19, 13, 0.78);
+  --amber: #ffb85c;
+  --gold: #ffd67a;
+  --green: #1f6a49;
+  --danger: #ff746b;
+  --shadow: rgba(0, 0, 0, 0.32);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 20%, #5a2d18, #140d0a 65%, #090706);
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+#game-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  outline: none;
+}
+
+#hud {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  color: var(--cream);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.topbar {
+  position: absolute;
+  top: max(18px, env(safe-area-inset-top));
+  left: max(18px, env(safe-area-inset-left));
+  right: max(18px, env(safe-area-inset-right));
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  color: var(--gold);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-family: Fraunces, Georgia, serif;
+  font-size: clamp(2rem, 5vw, 4.5rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.badge,
+.status-card,
+.players-card,
+.action-bar,
+.toast {
+  border: 1px solid rgba(255, 221, 154, 0.28);
+  background: linear-gradient(135deg, rgba(67, 37, 21, 0.78), rgba(20, 12, 9, 0.72));
+  box-shadow: 0 18px 48px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(14px) saturate(1.25);
+}
+
+.badge {
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: var(--gold);
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.status-card {
+  position: absolute;
+  left: max(18px, env(safe-area-inset-left));
+  top: 132px;
+  width: min(300px, calc(100vw - 36px));
+  border-radius: 24px;
+  padding: 18px;
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  color: rgba(255, 240, 214, 0.78);
+}
+
+.status-row + .status-row {
+  border-top: 1px solid rgba(255, 221, 154, 0.12);
+}
+
+.status-row strong {
+  color: var(--cream);
+  font-size: 1.05rem;
+}
+
+.message {
+  margin: 12px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 221, 154, 0.12);
+  color: var(--gold);
+  line-height: 1.35;
+}
+
+.players-card {
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  top: 132px;
+  width: min(280px, calc(100vw - 36px));
+  border-radius: 24px;
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.player-pill {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  padding: 11px 12px;
+  border-radius: 18px;
+  background: rgba(255, 225, 160, 0.1);
+  border: 1px solid rgba(255, 221, 154, 0.13);
+}
+
+.player-pill.is-turn {
+  outline: 2px solid rgba(255, 184, 92, 0.72);
+  box-shadow: 0 0 22px rgba(255, 184, 92, 0.22);
+}
+
+.player-name {
+  font-weight: 900;
+}
+
+.player-stack,
+.player-bet,
+.player-status {
+  font-size: 0.78rem;
+  color: rgba(255, 240, 214, 0.75);
+}
+
+.player-status {
+  color: var(--gold);
+  text-align: right;
+}
+
+.action-bar {
+  position: absolute;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(860px, calc(100vw - 28px));
+  border-radius: 28px;
+  padding: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(112px, 1fr)) minmax(150px, 1.4fr) repeat(2, minmax(112px, 1fr));
+  gap: 10px;
+  pointer-events: auto;
+}
+
+button,
+.raise-control {
+  min-height: 52px;
+  border: 0;
+  border-radius: 18px;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+  color: #22130c;
+  background: linear-gradient(180deg, #ffe6a3, #d9963f);
+  box-shadow: 0 9px 0 rgba(95, 52, 19, 0.92), 0 18px 26px rgba(0, 0, 0, 0.24);
+}
+
+button {
+  cursor: pointer;
+  transition: transform 150ms ease, filter 150ms ease, opacity 150ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(4px);
+  box-shadow: 0 4px 0 rgba(95, 52, 19, 0.92), 0 10px 20px rgba(0, 0, 0, 0.22);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.44;
+  filter: grayscale(0.25);
+}
+
+button.primary {
+  background: linear-gradient(180deg, #ffe083, #ff9a2f);
+}
+
+button.secondary {
+  background: linear-gradient(180deg, #e8fff3, #7ec7a0);
+}
+
+button.danger {
+  background: linear-gradient(180deg, #ffd0ca, #ff746b);
+}
+
+.raise-control {
+  display: grid;
+  align-items: center;
+  padding: 8px 14px;
+  color: var(--cream);
+  background: rgba(255, 230, 163, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 221, 154, 0.15), 0 9px 0 rgba(95, 52, 19, 0.42);
+}
+
+.raise-control span {
+  font-size: 0.78rem;
+  font-weight: 950;
+  color: var(--gold);
+}
+
+input[type='range'] {
+  accent-color: var(--amber);
+  width: 100%;
+}
+
+.toast {
+  position: absolute;
+  left: 50%;
+  bottom: 104px;
+  transform: translateX(-50%);
+  max-width: min(680px, calc(100vw - 28px));
+  border-radius: 999px;
+  padding: 11px 18px;
+  color: var(--gold);
+  font-weight: 850;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 240ms ease, translate 240ms ease;
+}
+
+.toast.show {
+  opacity: 1;
+  translate: 0 -6px;
+}
+
+@media (max-width: 760px) {
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .badge {
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+
+  .status-card,
+  .players-card {
+    top: auto;
+    width: calc(50vw - 22px);
+    bottom: 172px;
+    padding: 11px;
+    border-radius: 18px;
+    font-size: 0.78rem;
+  }
+
+  .players-card {
+    right: max(10px, env(safe-area-inset-right));
+  }
+
+  .status-card {
+    left: max(10px, env(safe-area-inset-left));
+  }
+
+  .action-bar {
+    grid-template-columns: repeat(2, 1fr);
+    border-radius: 22px;
+    gap: 9px;
+  }
+
+  .raise-control {
+    grid-column: 1 / -1;
+    order: -1;
+  }
+
+  button,
+  .raise-control {
+    min-height: 46px;
+    border-radius: 15px;
+  }
+
+  .toast {
+    bottom: 256px;
+  }
+}
