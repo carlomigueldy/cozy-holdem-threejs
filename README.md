@@ -2,7 +2,7 @@
 
 **Hearthside Hold'em** is a cozy, polished Texas Hold'em poker clone built with **Three.js**, **TypeScript**, **Vite**, and **pnpm**. It turns a standard poker table into a warm fireside card room: glowing amber light, rich green felt, wood-and-brass materials, animated cards, chip movement, friendly bot opponents, and a readable HUD designed for quick play in the browser.
 
-> Production URL: _deployment in progress — this README is updated with the final Vercel URL after deployment._
+> Production URL: <https://cozy-holdem-threejs.vercel.app>
 
 ![Browser smoke screenshot](docs/browser-smoke.png)
 
